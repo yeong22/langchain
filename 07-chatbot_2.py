@@ -1,7 +1,6 @@
 # 필요한 라이브러리 임포트
 import streamlit as st
 from langchain_openai import ChatOpenAI
-import streamlit as st
 
 # Streamlit UI 설정
 st.set_page_config(page_title="ChatOpenAI Demo", page_icon=":robot:")
@@ -18,7 +17,7 @@ else:
     st.stop()
 
 # OpenAI 클라이언트 초기화
-chat = ChatOpenAI(api_key=openai_api_key)
+chat = ChatOpenAI(temperature=0)
 
 #  세션 상태 초기화
 if "messages" not in st.session_state:
