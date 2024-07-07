@@ -11,7 +11,14 @@ st.header("ChatOpenAI Demo")
 # 사이드바에 OpenAI API 키 입력 필드 생성
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+if openai_api_key:
+    os.environ["OPENAI_API_KEY"] = openai_api_key
+else:
+    st.info("Please add your OpenAI API key to continue.")
+    st.stop()
 
+# OpenAI 클라이언트 초기화
+chat = ChatOpenAI(api_key=openai_api_key)
 
 #  세션 상태 초기화
 if "messages" not in st.session_state:
@@ -26,14 +33,8 @@ for message in st.session_state.messages:
             st.markdown(message["content"])
 
 # 사용자 입력 처리
-if prompt := st.chat_input("무엇을 도와드릴까요?"):
-    # API 키가 입력되지 않았을 경우 경고 메시지 표시
-    if not openai_api_key:
-        st.info("Please add your OpenAI API key to continue.")
-        st.stop()
-    # OpenAI 클라이언트 초기화
-    chat = ChatOpenAI(api_key=openai_api_key)
-
+prompt := st.chat_input("무엇을 도와드릴까요?"):
+if prompt:
 # 사용자 입력 처리
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
@@ -50,3 +51,4 @@ if prompt := st.chat_input("무엇을 도와드릴까요?"):
 
 # 스크롤을 최하단으로 이동
 st.empty()
+
